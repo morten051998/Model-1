@@ -11,7 +11,7 @@ Author: Morten Andreassen
 
 1.  Navigate to Your Project Directory: Open your terminal or RStudio terminal and navigate to the local directory where your R code is stored.
 
-cd C:\Users\morte\Documents\Skole\Spring 2024\\BIO 415\\Module 1
+cd C:\Users\morte\Documents\Skole\Spring 2024\BIO 415\Testing Github
 
 2.  Initialize Git (if not already done): If your project directory is not already a Git repository, you need to initialize it.
 
@@ -32,6 +32,21 @@ git commit -m "Initial commit: Uploading R scripts"
 6.  Push Your Code to GitHub: Push your committed changes to the GitHub repository.
 
 git push -u origin master
+
+- To finish the commit in Vim:
+
+- Press "i" to go into insert mode (if you want to edit the commit message).
+
+- You can modify the commit message if you'd like, or leave it as is.
+Once you're done, press "Esc" to exit insert mode.
+
+- Type ":wq" (which means "write and quit") and press Enter.
+
+- This will save the commit message and exit Vim, finalizing the merge commit.
+
+7. After exiting Vim, Git will complete the commit for the merge. Once that is done, you can proceed to push the changes to the remote repository using:
+
+git push origin master
 
 # Getting Started with Module 1
 
