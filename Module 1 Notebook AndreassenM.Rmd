@@ -1,0 +1,692 @@
+---
+title: "Module 1 Notebook"
+output: html_notebook
+date: Created 2024-10-01, Last modification 2024-10-01
+Author: Morten Andreassen
+---
+
+# GitHub info
+
+```{r}
+cd C:\Users\morte\Documents\Skole\Spring 2024\BIO 415\Module 1
+```
+
+```{r}
+git init
+```
+```{r}
+git remote add origin https://github.com/morten051998/Model-1.git
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
+
+
+# check if git is installed
+
+```{r}
+git --version
+```
+
+# Use this Git
+
+```{r}
+usethis::use_git()
+```
+
+#
+
+```{r}
+usethis::use_git_remote(
+  name = "origin",
+  url = "git@github.com:jennybc/happy-git-with-r.git",
+  overwrite = TRUE)
+```
+
+# Create token
+```{r}
+usethis::create_github_token()
+```
+
+# Getting Started with Module 1
+
+## Use of "\#" and {r}
+
+More "\#" gives more subheadings
+
+In the {r} command you can choose to exclude the code from your text using include=False so it looks like this {r, include=False} for data that is not to important include. You can also name the chunks {r, Mean_temp} so you can make it more easy to know what the code does.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list = ls())
+
+```
+
+# Load the needed packages
+
+```{r Tidyverse}
+library(tidyverse)
+```
+
+Load the Data
+
+```{r Mothcount data}
+df_mothcount <- read_csv("MothCount.csv")
+```
+
+# Tidy data
+
+# columnn spcifications
+
+```{r Spec Moth}
+spec(df_mothcount)
+```
+
+# Rename
+
+```{r rename mothcount}
+df_mothcount <- rename(df_mothcount,
+                       sex = ...1,
+                       dark = `Dark morph`,
+                       light = `Light morph`)
+```
+
+# Look at the data
+
+```{r str mothcount}
+str(df_mothcount)
+```
+
+```{r names mothcount}
+names(df_mothcount)
+```
+
+```{r head mothcount}
+head(df_mothcount)
+```
+
+```{r summary mothcount}
+summary(df_mothcount)
+```
+
+# Make it so all data has its own column
+
+```{r Tidy Moth}
+df_mothcount_tidy <- pivot_longer(data = df_mothcount,
+                                  cols = dark:light,
+                                  names_to = "morph",
+                                  values_to = "count")
+```
+
+# Check the data
+
+```{r Tidymoth check}
+head(df_mothcount_tidy)
+```
+
+Nice to know commands - Use the pipe command ctrl + shift + M = %\>%
+
+# Reshaping and separating complex time-series data
+
+# load the more complex data
+
+```{r Load O’Brien & Kaiser data}
+df_OBK <- read_csv("OBrienKaiser.csv")
+```
+
+# Look at the data
+
+```{r spec OBK}
+spec(df_OBK) 
+```
+
+```{r str obk}
+str(df_OBK) 
+```
+
+```{r obk names}
+names(df_OBK)
+```
+
+```{r obk head}
+head(df_OBK) 
+```
+
+```{r summarty obk}
+summary(df_OBK)
+```
+
+# use this code if you want to see the whole data set
+
+```{r whole data obk}
+print.data.frame(df_OBK)
+```
+
+# Lets tidy the data
+
+```{r Tidy OBK}
+df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+               names_to = "period",
+               values_to = "measurements")
+```
+
+# Whole data frame
+
+```{r Whole Tidy OBK data set}
+df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+               names_to = "period",
+               values_to = "measurements") %>%
+  print.data.frame(.)
+```
+
+# Last 10 rows
+
+```{r Last 10 rows of OBK data set}
+df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+               names_to = "period",
+               values_to = "measurements") %>%
+  tail(., n=10)
+```
+
+# Still has two pieces of information in the Period column
+
+# - Lets separate the column to Period and time
+
+```{r OBK Time and Period}
+df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+                                    names_to = "period",
+                                    values_to = "measurements") %>%
+  separate(col = period,
+           into = c("period", "time"),
+           sep = "\\.")
+```
+
+# Fix the period column
+
+```{r OBK fix period column}
+df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+               names_to = "period",
+               values_to = "measurements") %>%
+  separate(col = period,
+           into = c("period", "time"))
+```
+
+# lets make time numeric
+
+```{r OBK time numeric}
+df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+               names_to = "period",
+               values_to = "measurements") %>%
+  separate(col = period,
+           into = c("period", "time")) %>%
+  mutate(time = as.numeric(time))
+```
+
+# Lets save the data frame
+
+```{r OBK save the tidy data}
+df_OBK_tidy <- df_OBK %>%
+  rename(ID = ...1) %>%
+  pivot_longer(cols = pre.1:fup.5,
+               names_to = "period",
+               values_to = "measurements") %>%
+  separate(col = period,
+           into = c("period", "time")) %>%
+  mutate(time = as.numeric(time))
+```
+
+# Data Wrangling
+
+# Import the data set
+
+```{r Load Tom city Data}
+df_citytemps <- read.csv("TOM_CITIES.csv")
+```
+
+# look at the data
+
+```{r City head}
+head(df_citytemps)
+```
+
+# Tidy the data
+
+```{r Tidy city days}
+df_citytemps_tidy <- pivot_longer(data = df_citytemps, cols = Day.1:Day.10, names_to = "Day", values_to = "Temperatures")
+```
+
+Look at the data
+
+```{r City tidy head}
+head(df_citytemps_tidy)
+```
+
+# lets make Day.1 to say just 1
+
+```{r Fix day city}
+df_citytemps_tidy <- pivot_longer(
+  data = df_citytemps,
+  cols = Day.1:Day.10,
+  names_to = "Day",
+  values_to = "Temperature"
+) %>%
+  mutate(Day = str_remove(Day, "Day\\."))
+```
+
+# Check the output
+
+```{r Fixed day city head}
+head(df_citytemps_tidy)
+```
+
+# Lets arrange by temperature
+
+```{r City arrange by temp}
+df_citytemps_tidy %>%
+  arrange(desc(Temperature))
+```
+
+# Plot highest temperature for each location
+
+```{r City highest temp pr loc}
+df_citytemps_tidy %>%
+  arrange(desc(Temperature)) %>%
+  distinct(City, .keep_all = TRUE)
+```
+
+# Lets filter out the hottest area
+
+```{r City filter out hottest loc}
+df_citytemps_tidy %>%
+  filter(City != "Tuscaloosa") %>%
+  arrange(desc(Temperature))
+```
+
+# Lets arrange but now by the coldest temperatures
+
+```{r arrange by coldest temp}
+df_citytemps_tidy %>%
+  filter(City != "Tuscaloosa") %>%
+  arrange(Temperature)
+```
+
+# Lets make it so we only see a range of cities
+
+```{r Three cities range}
+df_citytemps_tidy %>%
+  filter(City %in% c("Cambridge","Falmouth","London")) %>%
+  arrange(Temperature)
+```
+
+# lets find the mean temperature for each city
+
+```{r mean temp city}
+df_citytemps_tidy %>%
+  group_by(City) %>%
+  summarise(Temp_mean = mean(Temperature))
+```
+
+# Lets find the standard deviation for each city
+
+```{r sd City}
+df_citytemps_tidy %>%
+  group_by(City) %>%
+  summarise(Temp_mean = mean(Temperature),
+            Temp_sd = sd(Temperature))
+```
+
+# Use the mutate function to get another Column with standard error
+
+```{r Mutate in sd to city}
+df_citytemps_tidy %>%
+  group_by(City) %>%
+  summarise(Temp_mean = mean(Temperature),
+            Temp_sd = sd(Temperature),
+            Temp_n = n()) %>%
+  mutate(Temp_SE = Temp_sd/sqrt(Temp_n))
+```
+
+# Use this to get the standard error
+
+```{r City se}
+df_citytemps_tidy %>%
+  group_by(City) %>%
+  summarise(Temp_mean = mean(Temperature),
+            Temp_SE = std_err(Temperature))
+```
+
+# Lets round up the digits so they all are the same
+
+```{r Round up City}
+df_citytemps_tidy %>%
+  group_by(City) %>%
+  summarise(Temp_mean = mean(Temperature),
+            Temp_SE = round(std_err(Temperature), digits = 3))
+```
+
+# Get the min and max temp for each city
+
+```{r min and max temp city}
+df_citytemps_tidy %>%
+  group_by(City) %>%
+  summarise(
+    Temp_min = min(Temperature),  
+    Temp_max = max(Temperature)   
+  )
+```
+
+# Joining related data sets
+
+# Load the proper data
+
+```{r Load mothmass data}
+df_moth_mass <- read_csv("MOTH_MASS.csv")
+```
+
+```{r Load mothmorphs data}
+df_moth_morph <- read_csv("MOTH_MORPHS.csv")
+```
+
+# Lets join the data sets
+
+```{r Join Moth mass and morph}
+df_moth_joined <- left_join(df_moth_mass, df_moth_morph)
+```
+
+# look at the joined data
+
+```{r Spec mothjoined}
+spec(df_moth_joined)
+```
+
+# lets find the mean mass for each sex and morph type
+
+```{r mean mass mothjoined}
+df_moth_joined %>%
+  group_by(SEX, MORPH) %>%
+  summarise(Mass_mean = mean(MASS))
+```
+
+# Interrogating large data sets
+
+# Load data
+
+```{r Load UK weather data}
+df_weather <- read_csv("UKWeatherData.csv")
+```
+
+# Look at the data
+
+```{r spec weather}
+spec(df_weather)
+```
+
+```{r head weather}
+head(df_weather)
+```
+
+# Filter out 2015 data as it is not complete
+
+```{r weather filter out 2015}
+df_weather <- df_weather %>%
+  filter(Year <= 2014)
+```
+
+# Check if it worked
+
+```{r Check weather}
+df_weather %>%
+  arrange(desc(Year)) %>%
+  distinct(Year, .keep_all = TRUE)
+```
+
+# Not the command we really wanted but I cannot see 2015
+
+# Lets find the hottest temperatures in Paisley
+
+```{r Hottest temp weather}
+df_weather %>%
+  filter(Location %in% c("Paisley")) %>%
+  arrange(desc(TempMax))
+```
+
+#Lets find the mean temperature for each year in Paisley
+
+```{r mean temp pr.year paisley weather}
+df_weather %>%
+  filter(Location %in% c("Paisley")) %>%  # Filter by location first
+  group_by(Year) %>%                      # Group by year
+  summarise(Temp_mean = mean(TempMax, na.rm = TRUE)) %>% # Calculate the mean of TempMax
+  arrange(desc(Temp_mean)) 
+```
+
+# Lets do the same but with all locations
+
+```{r mean temp all loc weather}
+df_weather %>%
+  group_by(Location, Year) %>%                      # Group by year
+  summarise(Temp_mean = mean(TempMax, na.rm = TRUE)) %>% # Calculate the mean of TempMax
+  arrange(desc(Temp_mean)) 
+```
+
+# Alright seems Heathrow is mostly the hottest area
+
+# Lets look at precipitation from the year I was born
+
+```{r 1998 precipitation weather}
+df_weather %>%
+  filter(Year == 1998) %>%  # Corrected Year filtering
+  group_by(Month) %>%       # Group by Month (not Year)
+  summarise(
+    rain_mean = mean(Rainfall, na.rm = TRUE),  # Calculate mean rainfall
+    rain_sd = sd(Rainfall, na.rm = TRUE),      # Calculate standard deviation
+    rain_n = n()                               # Count number of observations
+  ) %>%
+  mutate(rain_SE = rain_sd / sqrt(rain_n)) %>% # Calculate standard error
+  arrange(Month)
+```
+
+# Temperature ranges for each location each year
+
+```{r weather temp range}
+df_weather %>%
+  group_by(Location, Year) %>%                     # Group by Location and Year
+  summarise(
+    min_TempMin = min(TempMin, na.rm = TRUE),      # Find minimum TempMin
+    max_TempMax = max(TempMax, na.rm = TRUE),      # Find maximum TempMax
+    TempRange = max_TempMax - min_TempMin,         # Calculate TempRange
+    .groups = "drop"                               # Drop groupings after summarizing
+  ) %>%
+  arrange(desc(TempRange))                         # Sort by TempRange in descending order
+```
+
+# Bonus question for largest range in 2000 to 2010
+
+```{r}
+df_weather %>%
+  filter(Year >= 2000 & Year <= 2010) %>%                  # Filter for years 2000-2010
+  group_by(Location, Year) %>%                             # Group by Location and Year
+  summarise(
+    min_TempMin = min(TempMin, na.rm = TRUE),              # Find minimum TempMin
+    max_TempMax = max(TempMax, na.rm = TRUE),              # Find maximum TempMax
+    TempRange = max_TempMax - min_TempMin,                 # Calculate TempRange
+    .groups = "drop"                                       # Ungroup after summarising
+  ) %>%                                                    
+  arrange(desc(TempRange))                                            # Sort by Year
+```
+
+# The largest range fromm 2000 to 2010 is 2010 Cambridge with a temp range of 27.3 C
+
+# Create a new time-span "HalfYear"
+
+?ifelse
+
+```{r half-year weather}
+df_weather %>%
+  mutate(HalfYear = ifelse(Month <= 6, "First", "Second"))
+```
+
+# Lets make a new one with Quarter year
+
+```{r Quarter year weather}
+df_weather %>%
+  mutate(Quarter = ifelse(Month <= 3,1,
+                          ifelse(Month <= 6,2,
+                                 ifelse(Month <= 9,3,4))))
+```
+
+# Joining location info
+
+# Load new data to join
+
+```{r Load stations data}
+df_stations <- read_csv("WeatherStations.csv")
+```
+
+# Join the data so we can see the temperatures for each station
+
+```{r join weather and station}
+right_join(df_stations,df_weather, by = "Location")
+```
+
+# The data ranges does not overlap perfectly so lets look at the temps for one year (2014)
+
+```{r 2014 weather data}
+df_weather %>%
+  filter(Year == 2014) %>%
+  select(Location, Month, Rainfall) %>%
+  group_by(Location) %>%
+  summarise(total_rain = sum(Rainfall, na.rm = TRUE)) %>%
+  left_join(., df_stations) %>%
+  arrange(desc(total_rain)) %>%
+  print.data.frame()
+```
+
+# Ratio of sun to rainfall from 1900 to 1990
+
+```{r Ratio of sun to rainfall weather}
+df_weather %>%
+  filter(Year >= 1900 & Year <= 1999) %>%                  # Filter for 1900-1999
+  group_by(Location) %>%                                   # Group by Location
+  summarise(
+    total_sun = sum(Sun, na.rm = TRUE),                    # Sum of SunHours (ignoring NA values)
+    total_rainfall = sum(Rainfall, na.rm = TRUE),          # Sum of Rainfall (ignoring NA values)
+    sun_rain_ratio = total_sun / total_rainfall,           # Calculate ratio of total sun to total rainfall
+    .groups = "drop"                                       # Ungroup after summarising
+  ) %>%
+  left_join(., df_stations) %>%
+  arrange(desc(sun_rain_ratio))                            # Sort by sun/rain ratio in descending order
+```
+
+# Looking at the data the largest ratio of total sun to rainfall ratio from 1900 to 1990
+
+# is Cambridge with a ratio of 2.85
+
+# Lets see which station has these ratios
+
+```{r stations with these ranges weather}
+df_weather %>%
+  filter(Year >= 1900 & Year <= 1999) %>%                  # Filter for 1900-1999
+  group_by(Location) %>%                                   # Group by Location
+  summarise(
+    total_sun = sum(Sun, na.rm = TRUE),                    # Sum of SunHours (ignoring NA values)
+    total_rainfall = sum(Rainfall, na.rm = TRUE),          # Sum of Rainfall (ignoring NA values)
+    sun_rain_ratio = total_sun / total_rainfall,           # Calculate ratio of total sun to total rainfall
+    .groups = "drop"                                       # Ungroup after summarising
+  ) %>%
+  right_join(., df_stations) %>%
+  arrange(desc(sun_rain_ratio))                            # Sort by sun/rain ratio in descending order
+```
+
+# Looks like Cambridge I already did this in the previous task
+
+# Lets add quarter year to the data frame
+
+```{r Quarter to weather data}
+df_weather_quarter <- df_weather %>%
+  mutate(Month = as.numeric(Month),  # Ensure Month is numeric
+         Quarter = ifelse(Month <= 3, 1,
+                          ifelse(Month <= 6, 2,
+                                 ifelse(Month <= 9, 3, 4))))
+```
+
+# made a new data frame that includes the quarter years for each month
+
+# Spoilers
+
+# ‘Tom cities’ tidying code
+
+# import the data
+
+```{r Load Tom city}
+df_citytemps <- read_csv("TOM_CITIES.csv")
+```
+
+# reshape the data
+
+```{r reshape tom city data}
+df_citytemps <- pivot_longer(data = df_citytemps,
+                             cols = `Day 1`:`Day 10`,
+                             names_to = "Day",
+                             values_to = "Temperature") %>%
+  separate(Day, into=c("tmp","Day")) %>%
+  select(-tmp) %>%
+  mutate(Day = as.numeric(Day))
+```
+
+#Highest maximum temperature per year (2000 onwards)
+
+```{r max temp after year 2000 Tom City}
+df_weather %>%
+  select(Location, Year, Month, TempMax) %>%
+  filter(Year >= 2000) %>%
+  arrange(desc(TempMax)) %>%
+  distinct(Year, .keep_all = TRUE) %>%
+  arrange(desc(Year))
+```
+
+# Quarterly variable using a new data frame
+
+```{r add the quarter data to the data frame}
+df_quarter <- tibble(Month = c(1:12),
+                     Quarter = rep(1:4, each = 3))
+left_join(df_weather, df_quarter)
+```
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+\`\`\`
