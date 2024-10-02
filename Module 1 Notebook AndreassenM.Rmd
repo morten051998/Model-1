@@ -7,6 +7,8 @@ Author: Morten Andreassen
 
 ## GitHub info
 
+- link to my GitHub project: https://github.com/morten051998/Model-1.git
+
 ### All codes for the GitHub must be punched into the TERMINAL and not into the CONSOLE
 
 1.  Navigate to Your Project Directory: Open your terminal or RStudio terminal and navigate to the local directory where your R code is stored.
@@ -19,7 +21,7 @@ git init
 
 3.  Link Your GitHub Repository: Add the GitHub repository as the "remote" to your local project.
 
-git remote add origin <https://github.com/morten051998/Model-1.git>
+git remote add origin https://github.com/morten051998/Model-1.git
 
 4.  Add Your Files to Git: Use git add to add all your files (or specify particular files if you don't want to add everything).
 
