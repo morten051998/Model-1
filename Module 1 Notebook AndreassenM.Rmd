@@ -5,57 +5,33 @@ date: Created 2024-10-01, Last modification 2024-10-01
 Author: Morten Andreassen
 ---
 
-# GitHub info
+## GitHub info
 
-```{r}
-cd C:\Users\morte\Documents\Skole\Spring 2024\BIO 415\Module 1
-```
+### All codes for the GitHub must be punched into the TERMINAL and not into the CONSOLE
 
-```{r}
+1.  Navigate to Your Project Directory: Open your terminal or RStudio terminal and navigate to the local directory where your R code is stored.
+
+cd C:\Users\morte\Documents\Skole\Spring 2024\\BIO 415\\Module 1
+
+2.  Initialize Git (if not already done): If your project directory is not already a Git repository, you need to initialize it.
+
 git init
-```
-```{r}
-git remote add origin https://github.com/morten051998/Model-1.git
-```
-```{r}
 
-```
-```{r}
+3.  Link Your GitHub Repository: Add the GitHub repository as the "remote" to your local project.
 
-```
-```{r}
+git remote add origin <https://github.com/morten051998/Model-1.git>
 
-```
-```{r}
+4.  Add Your Files to Git: Use git add to add all your files (or specify particular files if you don't want to add everything).
 
-```
+git add "Module 1 Notebook AndreassenM.Rmd"
 
+5.  Commit Your Changes: Use a descriptive commit message to commit your changes.
 
-# check if git is installed
+git commit -m "Initial commit: Uploading R scripts"
 
-```{r}
-git --version
-```
+6.  Push Your Code to GitHub: Push your committed changes to the GitHub repository.
 
-# Use this Git
-
-```{r}
-usethis::use_git()
-```
-
-#
-
-```{r}
-usethis::use_git_remote(
-  name = "origin",
-  url = "git@github.com:jennybc/happy-git-with-r.git",
-  overwrite = TRUE)
-```
-
-# Create token
-```{r}
-usethis::create_github_token()
-```
+git push -u origin master
 
 # Getting Started with Module 1
 
@@ -63,7 +39,9 @@ usethis::create_github_token()
 
 More "\#" gives more subheadings
 
-In the {r} command you can choose to exclude the code from your text using include=False so it looks like this {r, include=False} for data that is not to important include. You can also name the chunks {r, Mean_temp} so you can make it more easy to know what the code does.
+In the {r} command (ctrl+alt+i) you can choose to exclude the code from your text using include=False so it looks like this {r, include=False} for data that is not to important include. You can also name the chunks {r, Mean_temp} so you can make it more easy to know what the code does.
+
+Nice to know commands - Use the pipe command ctrl + shift + M = %\>%
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -86,7 +64,7 @@ df_mothcount <- read_csv("MothCount.csv")
 
 # Tidy data
 
-# columnn spcifications
+# column specifications
 
 ```{r Spec Moth}
 spec(df_mothcount)
@@ -133,8 +111,6 @@ df_mothcount_tidy <- pivot_longer(data = df_mothcount,
 ```{r Tidymoth check}
 head(df_mothcount_tidy)
 ```
-
-Nice to know commands - Use the pipe command ctrl + shift + M = %\>%
 
 # Reshaping and separating complex time-series data
 
@@ -206,7 +182,7 @@ df_OBK %>%
 
 # Still has two pieces of information in the Period column
 
-# - Lets separate the column to Period and time
+### - Lets separate the column to Period and time
 
 ```{r OBK Time and Period}
 df_OBK %>%
@@ -472,7 +448,7 @@ df_weather %>%
   arrange(desc(TempMax))
 ```
 
-#Lets find the mean temperature for each year in Paisley
+# Lets find the mean temperature for each year in Paisley
 
 ```{r mean temp pr.year paisley weather}
 df_weather %>%
@@ -540,8 +516,9 @@ df_weather %>%
 # The largest range fromm 2000 to 2010 is 2010 Cambridge with a temp range of 27.3 C
 
 # Create a new time-span "HalfYear"
-
+```{r}
 ?ifelse
+```
 
 ```{r half-year weather}
 df_weather %>%
@@ -600,9 +577,7 @@ df_weather %>%
   arrange(desc(sun_rain_ratio))                            # Sort by sun/rain ratio in descending order
 ```
 
-# Looking at the data the largest ratio of total sun to rainfall ratio from 1900 to 1990
-
-# is Cambridge with a ratio of 2.85
+# Looking at the data the largest total sun to rainfall ratio from 1900 to 1990 is Cambridge with a ratio of 2.85
 
 # Lets see which station has these ratios
 
